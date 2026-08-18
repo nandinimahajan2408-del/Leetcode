@@ -1,16 +1,17 @@
 class Solution {
     void findlist(int k,int sum,int no,vector<vector<int>>&ans,vector<int>ds){
-        if(sum==0&&k==0) {
-            ans.push_back(ds);
-            return;
-        }
-        if(no>9||sum<0||k<0) return;
-        ds.push_back(no);
-        sum=sum-no;
-        findlist(k-1,sum,no+1,ans,ds);
+       if(k==0){
+        if(sum==0) ans.push_back(ds);
+        return;
+       }
+
+       for(int i=no;i<=9;i++){
+        if(i>sum) break;
+
+        ds.push_back(i);
+        findlist(k-1,sum-i,i+1,ans,ds);
         ds.pop_back();
-        sum=sum+no;
-        findlist(k,sum,no+1,ans,ds);
+       }
     }
 public:
     vector<vector<int>> combinationSum3(int k, int n) {
