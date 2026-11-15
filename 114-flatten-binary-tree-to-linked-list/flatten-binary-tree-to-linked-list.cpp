@@ -10,47 +10,32 @@
  * };
  */
 class Solution {
-
-private:
-    // Stores nodes in the exact preorder
-    // required by the flattened tree.
-    void preorder(
-        TreeNode* root,
-        vector<TreeNode*>& nodes
-    ) {
-        if (root == nullptr) {
+    void preorder(TreeNode*root,vector<TreeNode*>&pre){
+        if(root==nullptr){
             return;
         }
-
-        nodes.push_back(root);
-
-        preorder(root->left, nodes);
-        preorder(root->right, nodes);
+        pre.push_back(root);
+        preorder(root->left,pre);
+        preorder(root->right,pre);
     }
 
 public:
-    // Reconnects preorder nodes into
-    // one right-linked chain.
-    TreeNode* flatten(TreeNode* root) {
-        if (root == nullptr) {
-            return nullptr;
-        }
+    void flatten(TreeNode* root) {
+       if(root==nullptr) {
+        return ;
+       }
 
-        vector<TreeNode*> nodes;
+       vector<TreeNode*>pre;
+       preorder(root,pre);
 
-        preorder(root, nodes);
+       int n=pre.size();
+       for(int i=0;i<n-1;i++){
+        pre[i]->left=nullptr;
+        pre[i]->right=pre[i+1];
+       }
 
-        // Consecutive preorder nodes are linked
-        // through right pointers only.
-        for (int i = 0; i < nodes.size() - 1; i++) {
-            nodes[i]->left = nullptr;
-            nodes[i]->right = nodes[i + 1];
-        }
-        // The final node terminates
-        // the flattened structure.
-        nodes.back()->left = nullptr;
-        nodes.back()->right = nullptr;
-
-        return root;
+       pre[n-1]->left=nullptr;
+       pre[n-1]->right=nullptr;
+       return ;
     }
 };
