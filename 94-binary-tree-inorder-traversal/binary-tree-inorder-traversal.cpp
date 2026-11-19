@@ -10,16 +10,30 @@
  * };
  */
 class Solution {
-void findinorder(TreeNode*root,vector<int>&ans){
-if(root==nullptr)return;
- findinorder(root->left,ans);
-ans.push_back(root->val);
- findinorder(root->right,ans);
- }
 public:
     vector<int> inorderTraversal(TreeNode* root) {
         vector<int>ans;
-       findinorder(root,ans); 
+        //solve by moris traversal
+       TreeNode*curr=root;
+       while(curr){
+        if(curr->left==nullptr){
+            ans.push_back(curr->val);
+            curr=curr->right;
+        }else{
+            TreeNode*prev=curr->left;
+            while(prev->right&&prev->right!=curr){
+                prev=prev->right;
+            }
+            if(prev->right==nullptr){
+                prev->right=curr;
+                curr=curr->left;
+            }else{
+                prev->right=nullptr;
+                ans.push_back(curr->val);
+                curr=curr->right;
+            }
+        }
+       }
        return ans;
     }
     
