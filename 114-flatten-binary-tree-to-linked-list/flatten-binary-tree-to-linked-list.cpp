@@ -10,32 +10,21 @@
  * };
  */
 class Solution {
-    void preorder(TreeNode*root,vector<TreeNode*>&pre){
-        if(root==nullptr){
-            return;
-        }
-        pre.push_back(root);
-        preorder(root->left,pre);
-        preorder(root->right,pre);
-    }
-
 public:
     void flatten(TreeNode* root) {
-       if(root==nullptr) {
-        return ;
+      TreeNode*curr=root;
+       while(curr!=nullptr){
+        if(curr->left!=nullptr){
+            TreeNode*prev=curr->left;
+            while(prev->right){
+                prev=prev->right;
+            }
+            prev->right=curr->right;
+            curr->right=curr->left;
+            curr->left=nullptr;
+        }
+        curr=curr->right;
        }
-
-       vector<TreeNode*>pre;
-       preorder(root,pre);
-
-       int n=pre.size();
-       for(int i=0;i<n-1;i++){
-        pre[i]->left=nullptr;
-        pre[i]->right=pre[i+1];
-       }
-
-       pre[n-1]->left=nullptr;
-       pre[n-1]->right=nullptr;
-       return ;
+       return ;  
     }
 };
