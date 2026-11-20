@@ -1,31 +1,25 @@
-class Solution {
-    void findprefix(vector<int>&height,vector<int>&prefixmax){
-        prefixmax[0]=height[0];
-        for(int i=1;i<height.size();i++){
-            prefixmax[i]=max(prefixmax[i-1],height[i]);
-        }
-    }
-    void findsuffix(vector<int>&height,vector<int>&suffixmax){
-        suffixmax[height.size()-1]=height[height.size()-1];
-        for(int i=height.size()-2;i>=0;i--){
-            suffixmax[i]=max(suffixmax[i+1],height[i]);
-        }
-    }
-    
+class Solution {   
 public:
     int trap(vector<int>& height) {
         int n=height.size();
-       vector<int>prefixmax(n);
-       vector<int>suffixmax(n);
-       findprefix(height,prefixmax);
-       findsuffix(height,suffixmax);
+       long long total=0;
+       int leftmax=INT_MIN;
+       int rightmax=INT_MIN;
+       int left=0;
+       int right=n-1;
 
-       int total=0;
-       for(int i=0;i<n;i++){
-        if(height[i]<prefixmax[i]&&height[i]<suffixmax[i]){
-            total=total+(min(prefixmax[i],suffixmax[i])-height[i]);
+       while(left<right){
+        if(height[left]<=height[right]){
+            leftmax=max(leftmax,height[left]);
+            total+=leftmax-height[left];
+            left++;
+        }else{
+            rightmax=max(rightmax,height[right]);
+            total+=rightmax-height[right];
+            right--;
         }
        }
        return total;
+       
     }
 };
